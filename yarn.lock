@@ -1127,6 +1127,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@mdi/font@^7.2.96":
+  version "7.2.96"
+  resolved "https://pkgs.dev.azure.com/alm-animaeducacao/_packaging/animacore/npm/registry/@mdi/font/-/font-7.2.96.tgz#af800d9fe3b424f85ad45e9baa755bd003ab4986"
+  integrity sha1-r4ANn+O0JPha1F6bqnVb0AOrSYY=
+
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
   resolved "https://pkgs.dev.azure.com/alm-animaeducacao/_packaging/animacore/npm/registry/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz#7619c2eb21b25483f6d167548b4cfd5a7488c3d5"
@@ -3718,6 +3723,11 @@ vue@^3.2.47:
     "@vue/runtime-dom" "3.2.47"
     "@vue/server-renderer" "3.2.47"
     "@vue/shared" "3.2.47"
+
+vuetify@^3.0.0:
+  version "3.2.3"
+  resolved "https://pkgs.dev.azure.com/alm-animaeducacao/_packaging/animacore/npm/registry/vuetify/-/vuetify-3.2.3.tgz#05767c3d88068654b757d33789b8c249f1d38e00"
+  integrity sha1-BXZ8PYgGhlS3V9M3ibjCSfHTjgA=
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
