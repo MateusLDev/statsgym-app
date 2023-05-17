@@ -1,13 +1,90 @@
 @import './base.css';
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+.v-slide-group__content {
+  justify-content: space-between;
 }
-@media (min-width: 1024px) {
+
+.v-tab {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400 !important;
+  text-transform: none !important;
+  font-size: 12px;
+  color: #afafaf;
+}
+
+.v-tab .v-btn__content {
+  padding-bottom: 12px !important;
+}
+
+.v-tab--selected {
+  color: #f7f7f7 !important;
+}
+
+.v-tab--selected .v-tab__slider {
+  color: #e1b12c;
+}
+
+.page-header {
+  color: #fff;
+  font-size: 1.25em;
+  font-weight: 500;
+  margin: 15px 0 25px 0;
+}
+
+.page-subheader {
+  color: #fff;
+  font-size: 1em;
+  font-weight: 500;
+  margin: 15px 0 25px 0;
+}
+
+.fixed-button--block {
+  position: fixed;
+  bottom: 0;
+  /* width: 100%; */
+}
+
+.fixed-button--centered {
+  position: fixed;
+  bottom: 20px;
+  left: calc(50% - 22px);
+}
+
+label {
+  font-size: 12px;
+}
+
+tbody {
+  color: #fff;
+}
+
+.v-data-table-header {
+  background-color: red !important;
+  color: white;
+}
+
+::v-deep .v-data-table-header {
+  color: black;
+  background-color: red !important;
+}
+
+.v-table .v-table__wrapper > table > thead > tr > th {
+  background-color: #121212;
+  color: #909090 !important;
+  font-size: 14px;
+}
+
+tbody tr:nth-of-type(odd) {
+  background-color: #121212;
+  font-size: 14px;
+}
+
+tbody tr:nth-of-type(even) {
+  background-color: #282828;
+  font-size: 14px;
+}
+
+/* @media (min-width: 1024px) {
   body {
     display: flex;
     place-items: center;
@@ -18,4 +95,4 @@
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
   }
-}
+} */

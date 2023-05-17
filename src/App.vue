@@ -1,25 +1,13 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue';
+import Home from './views/Home.vue';
+import ExerciseList from './components/ExercisesList.vue';
 </script>
 
 <template>
-  <header>
-    <div class="wrapper">
-      <!-- <HelloWorld msg="You did it!" /> -->
-
-      <!-- <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav> -->
-    </div>
-  </header>
-  <v-tabs fixed-tabs bg-color="#121212">
-    <v-tab> Treino Atual </v-tab>
-    <v-tab> Exercícios </v-tab>
-    <v-tab> Treinos Realizados </v-tab>
-  </v-tabs>
-  <!-- <RouterView /> -->
+  <v-container>
+    <RouterView />
+  </v-container>
 </template>
 
 <style scoped>
