@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import Home from './views/Home.vue';
-import ExerciseList from './components/ExercisesList.vue';
+import { RouterView } from 'vue-router';
 </script>
 
 <template>

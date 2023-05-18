@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios from 'axios';
+
+import PageHeader from '@/components/utilities/PageHeader.vue';
 import INewWorkout from '../types/newWorkouts';
+import IExercisesList from '../types/exercises';
 
 const newWorkouts = ref<INewWorkout[]>([]);
+let exerciseList = ref<IExercisesList[]>([]);
 
 const addNewWorkout = () =>
   newWorkouts.value.push({ description: '', name: '', exercises: [] });
@@ -18,11 +23,35 @@ const deleteExercise = (exerciseIndex: number, workoutIndex: number) => {
 };
 
 addNewWorkout();
+
+const createExercise = async () => {
+  try {
+    newWorkouts.value.forEach(
+      async (workout) =>
+        await axios.post('http://localhost:5000/workout', workout)
+    );
+  } catch (error) {
+    console.log('error', error);
+  }
+};
+
+const getAllExercises = async () => {
+  try {
+    const { data } = await axios.get('http://localhost:5000/exercise-all');
+    exerciseList.value = data;
+  } catch (error) {
+    console.log(
+      'Ocorreu um erro ao obter a lista de exercícios disponíveis',
+      error
+    );
+  }
+};
+getAllExercises();
 </script>
 
 <template>
   <div>
-    <h2 class="page-header">Adicionar treino</h2>
+    <PageHeader>Adicionar treino</PageHeader>
 
     <div class="new-workouts-wrapper">
       <div
@@ -73,12 +102,16 @@ addNewWorkout();
           >
             <v-col cols="8" class="pt-0">
               <label for="exercise">Exercício</label>
-              <v-select
+              <v-autocomplete
                 id="exercise"
+                :items="exerciseList"
+                item-title="name"
+                item-value="name"
+                v-model="exercise.name"
                 density="comfortable"
                 variant="outlined"
                 hide-details
-              ></v-select>
+              ></v-autocomplete>
             </v-col>
 
             <v-col cols="4" class="pt-0">
@@ -104,10 +137,12 @@ addNewWorkout();
       <div class="btn-add-workout" @click="addNewWorkout()">
         <span>Adicionar treino</span>
       </div>
-    </div>
 
-    <div class="fixed-button--block">
-      <v-btn color="#E1B12C" theme="dark">Salvar</v-btn>
+      <div class="fixed-button--block">
+        <v-btn block color="#E1B12C" theme="dark" @click="createExercise()"
+          >Salvar</v-btn
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -162,5 +197,6 @@ addNewWorkout();
   cursor: pointer;
 
   margin-top: 24px;
+  margin-bottom: 90px;
 }
 </style>

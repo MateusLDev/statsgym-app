@@ -1,38 +1,51 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import axios from 'axios';
 import CardDisplay from '../components/utilities/CardDisplay.vue';
+import PageHeader from '@/components/utilities/PageHeader.vue';
 
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import INewWorkout from '../types/newWorkouts';
+
 const router = useRouter();
+const route = useRoute();
+let workoutData = ref<INewWorkout>();
 
-const goToRegisterWorkout = () => router.push({ name: 'RegisterWorkout' });
+const goToRegisterWorkout = () =>
+  router.push({ name: 'RegisterWorkout', params: { id: route.params.id } });
 
-const workoutList = ref([
-  { name: 'Remada Cavalinho', sets: 4 },
-  { name: 'Puxada Alta Pronada', sets: 4 },
-  { name: 'Remada Baixa Triângulo', sets: 4 },
-  { name: 'PullDown', sets: 4 },
-  { name: 'Remada Uliateral Halter', sets: 4 },
-  { name: 'Rosca Direta Barra W', sets: 4 },
-  { name: 'Rosca Scott', sets: 4 },
-  { name: 'Rosca Martelo', sets: 4 },
-]);
+const getWorkoutById = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5000/workout/${route.params.id}`
+    );
+    workoutData.value = data;
+    console.log(workoutData.value);
+  } catch (error) {
+    console.log('Ocorreu um erro ao obter dados deste exercício', error);
+  }
+};
+
+getWorkoutById();
+
+const setWorkoutInformation = (setAmount: number | undefined) =>
+  `${setAmount} Exercícios`;
 </script>
 
 <template>
   <div class="view-workout-wrapper">
-    <h2 class="page-header">Visualizar treino</h2>
+    <PageHeader>Visualizar treino</PageHeader>
 
     <CardDisplay
       type="large"
       identificator="Treino A"
-      information="8 Exercícios"
-      workout="Peito e Ombro"
+      :workout="workoutData?.name"
+      :information="setWorkoutInformation(workoutData?.exercises.length)"
     />
 
     <h2 class="page-subheader mb-1">Detalhes</h2>
     <p class="workout-description mb-4">
-      Treino com ênfase no detalhamento das costas. 10/12reps.
+      {{ workoutData?.description }}
     </p>
 
     <v-table density="compact">
@@ -43,7 +56,7 @@ const workoutList = ref([
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in workoutList" :key="item.name">
+        <tr v-for="item in workoutData?.exercises" :key="item.name">
           <td>{{ item.name }}</td>
           <td>{{ item.sets }}</td>
         </tr>

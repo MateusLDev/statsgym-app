@@ -1,29 +1,45 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRoute } from 'vue-router';
+import axios from 'axios';
+
 import CardDisplay from '../components/utilities/CardDisplay.vue';
+import PageHeader from '@/components/utilities/PageHeader.vue';
 import { workoutHeaders } from '@/utils/headers';
 
 import IRegisterWorkoutPayload, {
   Exercises,
   Sets,
 } from '../types/RegisterWorkoutPayload';
+import INewWorkout, { Exercise } from '../types/newWorkouts';
 
-const workoutList = ref([
-  { name: 'Remada Cavalinho', sets: 4 },
-  { name: 'Puxada Alta Pronada', sets: 4 },
-  { name: 'Remada Baixa Triângulo', sets: 4 },
-  { name: 'PullDown', sets: 4 },
-  { name: 'Remada Uliateral Halter', sets: 4 },
-  { name: 'Rosca Direta Barra W', sets: 4 },
-  { name: 'Rosca Scott', sets: 4 },
-  { name: 'Rosca Martelo', sets: 4 },
-]);
+const route = useRoute();
 
+let workoutData = ref<INewWorkout>();
 const workoutToRegister = ref<IRegisterWorkoutPayload>();
 
-const setExercisesToAWorkout = (workoutList: any[]) => {
+const getWorkoutById = async () => {
+  try {
+    const { data } = await axios.get(
+      `http://localhost:5000/workout/${route.params.id}`
+    );
+    workoutData.value = data;
+
+    workoutToRegister.value = {
+      name: workoutData.value?.name,
+      finishedDate: new Date().toDateString(),
+      id: workoutData.value?.id,
+      exercises: setExercisesToAWorkout(workoutData.value?.exercises),
+    };
+    console.log('workoutToRegister', workoutToRegister.value);
+  } catch (error) {
+    console.log('Ocorreu um erro ao obter dados deste exercício', error);
+  }
+};
+
+const setExercisesToAWorkout = (workoutList: Exercise[] | undefined) => {
   const exercises: Exercises[] = [];
-  workoutList.forEach((workout) =>
+  workoutList?.forEach((workout) =>
     exercises.push({
       name: workout.name,
       description: '',
@@ -36,8 +52,6 @@ const setExercisesToAWorkout = (workoutList: any[]) => {
 
 const addSetsToAnExercise = (setNumber: number) => {
   const sets: Sets[] = [];
-
-  console.log('setNumber', setNumber);
 
   for (let i = 1; i <= setNumber; i++) {
     sets.push({
@@ -52,114 +66,130 @@ const addSetsToAnExercise = (setNumber: number) => {
   return sets;
 };
 
-workoutToRegister.value = {
-  name: 'Costas e Biceps',
-  finishedDate: new Date().toDateString(),
-  id: '',
-  exercises: setExercisesToAWorkout(workoutList.value),
+const setWorkoutInformation = (setAmount: number | undefined) =>
+  `${setAmount} Exercícios`;
+
+const finishWorkout = async () => {
+  try {
+    await axios.post(
+      'http://localhost:5000/finish-workout',
+      workoutToRegister.value
+    );
+  } catch (error) {
+    console.log('Ocorreu um erro ao finalizar treino', error);
+  }
 };
+
+getWorkoutById();
 </script>
 
 <template>
   <div class="view-workout-wrapper">
-    <h2 class="page-header">Registrar treino</h2>
+    <PageHeader> Registrar treino </PageHeader>
 
     <CardDisplay
       type="large"
       identificator="Treino A"
-      information="8 Exercícios"
-      workout="Peito e Ombro"
+      :workout="workoutData?.name"
+      :information="setWorkoutInformation(workoutData?.exercises.length)"
       class="mb-8"
     />
 
-    <div
-      v-for="(workout, index) in workoutToRegister?.exercises"
-      :key="index"
-      class="mb-10"
-    >
-      <h2 class="page-subheader mb-1 ml-4">
-        {{ workout.name }}
-      </h2>
-      <textarea
-        type="text"
-        class="workout-description mb-4 ml-4"
-        placeholder="Adicionar notas aqui..."
-        v-model="workout.description"
-      />
+    <div class="workout-table-wrapper">
+      <div
+        v-for="(workout, index) in workoutToRegister?.exercises"
+        :key="index"
+        class="mb-10"
+      >
+        <h2 class="page-subheader mb-1 ml-4">
+          {{ workout.name }}
+        </h2>
+        <textarea
+          type="text"
+          class="workout-description mb-4 ml-4"
+          placeholder="Adicionar notas aqui..."
+          v-model="workout.description"
+        />
 
-      <v-table density="compact">
-        <thead>
-          <tr>
-            <th
-              class="text-left"
-              v-for="header in workoutHeaders"
-              :key="header.key"
-            >
-              {{ header.title }}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(set, index) in workout.sets" :key="index">
-            <td>{{ set.set }}</td>
-            <td>
-              <input
-                class="register-workout-input"
-                type="text"
-                v-model="set.weight"
-              />
-            </td>
-            <td>
-              <input
-                class="register-workout-input"
-                type="text"
-                v-model="set.reps"
-              />
-            </td>
-            <td>
-              <input
-                class="register-workout-input"
-                type="text"
-                v-model="set.reserveReps"
-              />
-            </td>
-            <td>
-              <v-checkbox
-                v-model="set.accessories"
-                color="#E1B12C"
-                hide-details
-              ></v-checkbox>
-            </td>
-            <td>
-              <v-checkbox
-                v-model="set.failedSet"
-                color="#E1B12C"
-                hide-details
-              ></v-checkbox>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
+        <v-table density="compact">
+          <thead>
+            <tr>
+              <th
+                class="text-left"
+                v-for="header in workoutHeaders"
+                :key="header.key"
+              >
+                {{ header.title }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(set, index) in workout.sets" :key="index">
+              <td>{{ set.set }}</td>
+              <td>
+                <input
+                  class="register-workout-input"
+                  type="text"
+                  v-model="set.weight"
+                  placeholder="0"
+                />
+              </td>
+              <td>
+                <input
+                  class="register-workout-input"
+                  type="text"
+                  v-model="set.reps"
+                  placeholder="0"
+                />
+              </td>
+              <td>
+                <input
+                  class="register-workout-input"
+                  type="text"
+                  v-model="set.reserveReps"
+                  placeholder="0"
+                />
+              </td>
+              <td>
+                <v-checkbox
+                  v-model="set.accessories"
+                  color="#E1B12C"
+                  hide-details
+                ></v-checkbox>
+              </td>
+              <td>
+                <v-checkbox
+                  v-model="set.failedSet"
+                  color="#E1B12C"
+                  hide-details
+                ></v-checkbox>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </div>
     </div>
 
-    <div class="fixed-button--centered">
-      <v-btn
-        density="default"
-        color="#E1B12C"
-        theme="dark"
-        icon="mdi-play"
-      ></v-btn>
+    <div class="fixed-button--block">
+      <v-btn block color="#E1B12C" theme="dark" @click="finishWorkout()"
+        >Salvar</v-btn
+      >
     </div>
   </div>
 </template>
 
 <style scoped lang="scss">
 .view-workout-wrapper {
-  height: calc(100vh - 32px);
+  // height: calc(100vh - 32px);
+  margin-bottom: 80px;
   .workout-description {
     color: #969696;
     font-size: 14px;
-    width: 100%;
+    width: 99%;
+  }
+
+  .workout-table-wrapper {
+    margin-bottom: 80px;
   }
 
   input {

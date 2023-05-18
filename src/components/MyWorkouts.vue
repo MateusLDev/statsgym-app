@@ -1,50 +1,50 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
 import CardDisplay from '../components/utilities/CardDisplay.vue';
+import axios from 'axios';
+import INewWorkout from '../types/newWorkouts';
+import IExercisesList from '../types/exercises';
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
+let myWorkouts = ref<INewWorkout[]>([]);
+
+const getMyWorkouts = async () => {
+  try {
+    const { data } = await axios.get('http://localhost:5000/workouts');
+    myWorkouts.value = data;
+  } catch (error) {
+    console.log(
+      'Ocorreu um erro ao obter dados dos seus exercícos cadastrados',
+      error
+    );
+  }
+};
+
 const goToNewExercise = () => router.push({ name: 'NewExercise' });
-const goToViewExercise = () => router.push({ name: 'ViewExercise' });
+const goToViewExercise = (workout: any) => {
+  router.push({ name: 'ViewExercise', params: { id: workout.id } });
+};
+
+getMyWorkouts();
 </script>
 
 <template>
   <!-- talvez criar um englobador e so passar como slot o card com o v-for, ja que o estilo é o mesmo -->
-  <div class="exercises-wrapper">
+  <div class="exercises-wrapper" v-if="myWorkouts.length">
     <CardDisplay
+      v-for="(workout, index) in myWorkouts"
+      :key="index"
       :identificator="null"
-      workout="Costa e Bíceps"
-      information="8 exercícios - 10 a 12 reps"
+      :workout="workout.name"
+      :information="workout.description"
       type="medium"
-      @click="goToViewExercise()"
-    />
-    <CardDisplay
-      :identificator="null"
-      workout="Peito e Triceps"
-      information="8 exercícios - 10 a 12 reps"
-      type="medium"
-    />
-    <CardDisplay
-      :identificator="null"
-      workout="Perna completo"
-      information="8 exercícios - 10 a 12 reps"
-      type="medium"
-    />
-    <CardDisplay
-      :identificator="null"
-      workout="Ombros"
-      information="8 exercícios - 10 a 12 reps"
-      type="medium"
-    />
-    <CardDisplay
-      :identificator="null"
-      workout="Bíceps e Triceps"
-      information="8 exercícios - 10 a 12 reps"
-      type="medium"
+      @click="goToViewExercise(workout)"
     />
   </div>
 
-  <div class="no-content">
+  <div class="no-content" v-else>
     <p class="no-content-text">Você não possui treinos cadastrados</p>
   </div>
 

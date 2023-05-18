@@ -4,8 +4,8 @@ import { defineProps } from 'vue';
 interface ICardProps {
   type: string;
   identificator: string | null;
-  workout: string;
-  information: string;
+  workout: string | undefined;
+  information: string | undefined;
 }
 
 const props = defineProps<ICardProps>();
@@ -20,7 +20,6 @@ const props = defineProps<ICardProps>();
     />
 
     <div class="card-display-description">
-      <div class="identificator">{{ props.identificator }}</div>
       <h1 class="workout-name">{{ props.workout }}</h1>
       <div class="information">{{ props.information }}</div>
     </div>
@@ -33,6 +32,7 @@ const props = defineProps<ICardProps>();
   border-radius: 8px;
   padding: 13px;
   display: flex;
+  align-items: center;
   // margin-bottom: 16px;
 
   &--large {
@@ -80,7 +80,7 @@ const props = defineProps<ICardProps>();
     }
 
     .information {
-      font-size: 0.6em;
+      font-size: 0.8em;
       font-weight: 400;
       color: #d6c9c9;
     }
