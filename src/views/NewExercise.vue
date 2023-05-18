@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 import PageHeader from '@/components/utilities/PageHeader.vue';
 import INewWorkout from '../types/newWorkouts';
 import IExercisesList from '../types/exercises';
+
+const router = useRouter();
 
 const newWorkouts = ref<INewWorkout[]>([]);
 let exerciseList = ref<IExercisesList[]>([]);
@@ -31,8 +34,9 @@ const createExercise = async () => {
         await axios.post('http://localhost:5000/workout', workout)
     );
   } catch (error) {
-    console.log('error', error);
+    console.log('Ocorreu um erro ao criar este exercício', error);
   }
+  router.push({ name: 'home' });
 };
 
 const getAllExercises = async () => {

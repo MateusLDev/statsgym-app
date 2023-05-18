@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
 import CardDisplay from '../components/utilities/CardDisplay.vue';
@@ -14,6 +14,7 @@ import IRegisterWorkoutPayload, {
 import INewWorkout, { Exercise } from '../types/newWorkouts';
 
 const route = useRoute();
+const router = useRouter();
 
 let workoutData = ref<INewWorkout>();
 const workoutToRegister = ref<IRegisterWorkoutPayload>();
@@ -31,7 +32,6 @@ const getWorkoutById = async () => {
       id: workoutData.value?.id,
       exercises: setExercisesToAWorkout(workoutData.value?.exercises),
     };
-    console.log('workoutToRegister', workoutToRegister.value);
   } catch (error) {
     console.log('Ocorreu um erro ao obter dados deste exercício', error);
   }
@@ -78,6 +78,7 @@ const finishWorkout = async () => {
   } catch (error) {
     console.log('Ocorreu um erro ao finalizar treino', error);
   }
+  router.push({ name: 'home' });
 };
 
 getWorkoutById();
@@ -180,7 +181,6 @@ getWorkoutById();
 
 <style scoped lang="scss">
 .view-workout-wrapper {
-  // height: calc(100vh - 32px);
   margin-bottom: 80px;
   .workout-description {
     color: #969696;
