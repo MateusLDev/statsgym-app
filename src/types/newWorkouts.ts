@@ -2,9 +2,10 @@ export default interface NewWorkouts {
   name: string;
   description: string;
   exercises: Exercise[];
+  id?: string;
 }
 
-interface Exercise {
+export interface Exercise {
   name: string;
-  sets: number | null;
+  sets: number;
 }

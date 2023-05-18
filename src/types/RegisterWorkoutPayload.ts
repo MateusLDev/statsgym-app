@@ -1,17 +1,17 @@
 export default interface RegisterWorkoutPayload {
-  name: string;
-  id: string;
+  name: string | undefined;
+  id: string | undefined;
   finishedDate: string;
   exercises: Exercises[];
 }
 
-interface Exercises {
+export interface Exercises {
   name: string;
   description: string;
   sets: Sets[];
 }
 
-interface Sets {
+export interface Sets {
   set: number;
   weight: string;
   reps: string;
@@ -19,5 +19,3 @@ interface Sets {
   failedSet: boolean;
   accessories: boolean;
 }
-
-export { Exercises, Sets };

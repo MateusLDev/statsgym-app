@@ -40,8 +40,41 @@
 
 .fixed-button--block {
   position: fixed;
-  bottom: 0;
-  /* width: 100%; */
+  bottom: 15px;
+  width: calc(100% - 35px);
+}
+
+@media (min-width: 960px) {
+  .fixed-button--block {
+    width: calc(100% - 60px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .fixed-button--block {
+    width: calc(100% - 150px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .fixed-button--block {
+    width: calc(100% - 260px);
+  }
+}
+
+@media (min-width: 1920px) {
+  .fixed-button--block {
+    width: calc(100% - 120px);
+  }
+  .v-container {
+    max-width: 1800px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .fixed-button--block {
+    width: calc(100% - 160px);
+  }
 }
 
 .fixed-button--centered {
@@ -83,16 +116,3 @@ tbody tr:nth-of-type(even) {
   background-color: #282828;
   font-size: 14px;
 }
-
-/* @media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-} */
