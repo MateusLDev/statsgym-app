@@ -20,7 +20,6 @@ const getWorkoutById = async () => {
       `http://localhost:5000/workout/${route.params.id}`
     );
     workoutData.value = data;
-    console.log(workoutData.value);
   } catch (error) {
     console.log('Ocorreu um erro ao obter dados deste exercício', error);
   }
