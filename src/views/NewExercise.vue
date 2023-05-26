@@ -104,7 +104,7 @@ getAllExercises();
             v-for="(exercise, exerciseIndex) in workout.exercises"
             :key="exerciseIndex"
           >
-            <v-col cols="8" class="pt-0">
+            <v-col cols="6" class="pt-0">
               <label for="exercise">Exercício</label>
               <v-autocomplete
                 id="exercise"
@@ -118,7 +118,7 @@ getAllExercises();
               ></v-autocomplete>
             </v-col>
 
-            <v-col cols="4" class="pt-0">
+            <v-col cols="6" class="pt-0">
               <label for="exercise">Séries</label>
               <v-text-field
                 id="sets"

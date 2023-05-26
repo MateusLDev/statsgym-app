@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import ExerciseList from '../components/ExercisesList.vue';
 import MyWorkouts from '../components/MyWorkouts.vue';
+import FinishedWorkouts from '@/components/FinishedWorkouts.vue';
 
 const tab = ref(null);
 </script>
@@ -33,7 +34,11 @@ const tab = ref(null);
       <ExerciseList />
     </v-window-item>
 
-    <v-window-item value="three"> Three </v-window-item>
+    <v-window-item value="three">
+      <h2 class="page-subheader">Treinos finalizados</h2>
+
+      <FinishedWorkouts />
+    </v-window-item>
   </v-window>
 </template>
 
