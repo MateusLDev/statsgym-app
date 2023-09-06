@@ -1,5 +1,5 @@
 export default interface Exercises {
   name: string;
-  sets: number;
+  sets?: number;
   category?: string;
 }

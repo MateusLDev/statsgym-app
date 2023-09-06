@@ -1,28 +1,27 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { reactive, computed } from 'vue';
 import CardDisplay from '../components/utilities/CardDisplay.vue';
-import axios from 'axios';
+// import axios from 'axios';
 import INewWorkout from '../types/newWorkouts';
-import IExercisesList from '../types/exercises';
+// import IExercisesList from '../types/exercises';
+
+// import API from '../services/api'
 
 import { useRouter } from 'vue-router';
 const router = useRouter();
 
-let myWorkouts = ref<INewWorkout[]>([]);
+let myWorkouts = reactive<INewWorkout[]>([]);
 
-const getMyWorkouts = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:5000/workouts');
-    myWorkouts.value = data;
-  } catch (error) {
-    console.log(
-      'Ocorreu um erro ao obter dados dos seus exercícos cadastrados',
-      error
-    );
+const getMyWorkouts = () => {
+  const myWorkoutsStorageds = localStorage.getItem('myWorkouts')
+
+  if(myWorkoutsStorageds) {
+    myWorkouts = JSON.parse(myWorkoutsStorageds)
   }
 };
 
 const goToNewExercise = () => router.push({ name: 'NewExercise' });
+
 const goToViewExercise = (workout: any) => {
   router.push({ name: 'ViewExercise', params: { id: workout.id } });
 };
