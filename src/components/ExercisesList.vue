@@ -2,23 +2,13 @@
 import { ref } from 'vue';
 import CardDisplay from '../components/utilities/CardDisplay.vue';
 import axios from 'axios';
+import ExercisesListData from '../services/workouts.json'
 
 import IExercisesList from '../types/exercises';
 
 let exerciseList = ref<IExercisesList[]>([]);
 
-const getAllExercises = async () => {
-  try {
-    const { data } = await axios.get('http://localhost:5000/exercise-all');
-    exerciseList.value = data;
-  } catch (error) {
-    console.log(
-      'Ocorreu um erro ao obter a lista de exercícios disponíveis',
-      error
-    );
-  }
-};
-getAllExercises();
+exerciseList.value = ExercisesListData
 
 const getExerciseArea = (area: string | undefined) => {
   if (area === 'chest') return 'Peito';

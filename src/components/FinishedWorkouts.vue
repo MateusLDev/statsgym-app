@@ -14,13 +14,8 @@ let workoutData = ref<any[]>();
 const goToRegisterWorkout = () =>
   router.push({ name: 'RegisterWorkout', params: { id: route.params.id } });
 
-const getFinishedWorkouts = async () => {
-  try {
-    const { data } = await axios.get(`http://localhost:5000/finished-workouts`);
-    workoutData.value = data;
-  } catch (error) {
-    console.log('Ocorreu um erro ao obter exercícios finalizados', error);
-  }
+const getFinishedWorkouts = () => {
+  workoutData.value = JSON.parse(localStorage.getItem('finishedWorkouts'))
 };
 
 getFinishedWorkouts();

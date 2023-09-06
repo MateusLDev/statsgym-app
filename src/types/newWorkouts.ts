@@ -7,5 +7,5 @@ export default interface NewWorkouts {
 
 export interface Exercise {
   name: string;
-  sets: number;
+  sets: number | null;
 }

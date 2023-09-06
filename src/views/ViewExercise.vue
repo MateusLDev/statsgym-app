@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
 import CardDisplay from '../components/utilities/CardDisplay.vue';
 import PageHeader from '@/components/utilities/PageHeader.vue';
 
 import { useRouter, useRoute } from 'vue-router';
-import INewWorkout from '../types/newWorkouts';
+import type INewWorkout from '../types/newWorkouts';
 
 const router = useRouter();
 const route = useRoute();
@@ -14,18 +13,12 @@ let workoutData = ref<INewWorkout>();
 const goToRegisterWorkout = () =>
   router.push({ name: 'RegisterWorkout', params: { id: route.params.id } });
 
-const getWorkoutById = async () => {
-  try {
-    const { data } = await axios.get(
-      `http://localhost:5000/workout/${route.params.id}`
-    );
-    workoutData.value = data;
-  } catch (error) {
-    console.log('Ocorreu um erro ao obter dados deste exercício', error);
-  }
+const setWorkoutData = () => {
+  const myWorkots = JSON.parse(localStorage.getItem('myWorkouts') as string) as INewWorkout[]
+  workoutData.value = myWorkots.find(workout => workout.id === route.params.id)
 };
 
-getWorkoutById();
+setWorkoutData();
 
 const setWorkoutInformation = (setAmount: number | undefined) =>
   `${setAmount} Exercícios`;
@@ -35,12 +28,8 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
   <div class="view-workout-wrapper">
     <PageHeader>Visualizar treino</PageHeader>
 
-    <CardDisplay
-      type="large"
-      identificator="Treino A"
-      :workout="workoutData?.name"
-      :information="setWorkoutInformation(workoutData?.exercises.length)"
-    />
+    <CardDisplay type="large" identificator="Treino A" :workout="workoutData?.name"
+      :information="setWorkoutInformation(workoutData?.exercises.length)" />
 
     <h2 class="page-subheader mb-1">Detalhes</h2>
     <p class="workout-description mb-4">
@@ -63,13 +52,7 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
     </v-table>
 
     <div class="fixed-button--centered">
-      <v-btn
-        density="default"
-        color="#E1B12C"
-        theme="dark"
-        icon="mdi-play"
-        @click="goToRegisterWorkout()"
-      ></v-btn>
+      <v-btn density="default" color="#E1B12C" theme="dark" icon="mdi-play" @click="goToRegisterWorkout()"></v-btn>
     </div>
   </div>
 </template>
@@ -77,6 +60,7 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
 <style scoped lang="scss">
 .view-workout-wrapper {
   height: calc(100vh - 32px);
+
   .workout-description {
     color: #969696;
     font-size: 14px;
