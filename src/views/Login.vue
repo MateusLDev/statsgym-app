@@ -10,6 +10,8 @@ const confirmPassword = ref('')
 const router = useRouter()
 
 const goToHome = () => {
+  localStorage.setItem('isLogged', 'true')
+  localStorage.setItem('isFirstLogin', 'false')
   router.push({ name: 'Home' })
 }
 </script>

@@ -4,6 +4,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter()
 
 const goToLogin = () => {
+  console.log('chamou', router);
+  
   router.push({ name: 'Login' })
 }
 </script>
