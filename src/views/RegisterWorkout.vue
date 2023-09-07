@@ -67,68 +67,70 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
 const finishWorkout = () => {
   let finishedWorkouts = localStorage.getItem('finishedWorkouts')
   ''
-  if(finishedWorkouts) {
+  if (finishedWorkouts) {
     localStorage.setItem('finishedWorkouts', JSON.stringify([...finishedWorkouts, workoutToRegister.value]))
   } else {
     localStorage.setItem('finishedWorkouts', JSON.stringify([workoutToRegister.value]))
   }
-  router.push({ name: 'home' });
+  router.push({ name: 'Home' });
 };
 
 getWorkoutById();
 </script>
 
 <template>
-  <div class="view-workout-wrapper">
-    <PageHeader> Registrar treino </PageHeader>
+  <v-container>
+    <div class="view-workout-wrapper">
+      <PageHeader> Registrar treino </PageHeader>
 
-    <CardDisplay type="large" identificator="Treino A" :workout="workoutData?.name"
-      :information="setWorkoutInformation(workoutData?.exercises.length)" class="mb-8" />
+      <CardDisplay type="large" identificator="Treino A" :workout="workoutData?.name"
+        :information="setWorkoutInformation(workoutData?.exercises.length)" class="mb-8" />
 
-    <div class="workout-table-wrapper">
-      <div v-for="(workout, index) in workoutToRegister?.exercises" :key="index" class="mb-10">
-        <h2 class="page-subheader mb-1 ml-4">
-          {{ workout.name }}
-        </h2>
-        <textarea type="text" class="workout-description mb-4 ml-4" placeholder="Adicionar notas aqui..."
-          v-model="workout.description" />
+      <div class="workout-table-wrapper">
+        <div v-for="(workout, index) in workoutToRegister?.exercises" :key="index" class="mb-10">
+          <h2 class="page-subheader mb-1 ml-4">
+            {{ workout.name }}
+          </h2>
+          <textarea type="text" class="workout-description mb-4 ml-4" placeholder="Adicionar notas aqui..."
+            v-model="workout.description" />
 
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-left" v-for="header in workoutHeaders" :key="header.key">
-                {{ header.title }}
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(set, index) in workout.sets" :key="index">
-              <td>{{ set.set }}</td>
-              <td>
-                <input class="register-workout-input" type="text" v-model="set.weight" placeholder="0" />
-              </td>
-              <td>
-                <input class="register-workout-input" type="text" v-model="set.reps" placeholder="0" />
-              </td>
-              <td>
-                <input class="register-workout-input" type="text" v-model="set.reserveReps" placeholder="0" />
-              </td>
-              <td>
-                <v-checkbox v-model="set.accessories" color="#E1B12C" hide-details></v-checkbox>
-              </td>
-              <td>
-                <v-checkbox v-model="set.failedSet" color="#E1B12C" hide-details></v-checkbox>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
+          <v-table density="compact">
+            <thead>
+              <tr>
+                <th class="text-left" v-for="header in workoutHeaders" :key="header.key">
+                  {{ header.title }}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(set, index) in workout.sets" :key="index">
+                <td>{{ set.set }}</td>
+                <td>
+                  <input class="register-workout-input" type="text" v-model="set.weight" placeholder="0" />
+                </td>
+                <td>
+                  <input class="register-workout-input" type="text" v-model="set.reps" placeholder="0" />
+                </td>
+                <td>
+                  <input class="register-workout-input" type="text" v-model="set.reserveReps" placeholder="0" />
+                </td>
+                <td>
+                  <v-checkbox v-model="set.accessories" color="#E1B12C" hide-details></v-checkbox>
+                </td>
+                <td>
+                  <v-checkbox v-model="set.failedSet" color="#E1B12C" hide-details></v-checkbox>
+                </td>
+              </tr>
+            </tbody>
+          </v-table>
+        </div>
+      </div>
+
+      <div class="fixed-button--block">
+        <v-btn block color="#E1B12C" theme="dark" @click="finishWorkout()">Salvar</v-btn>
       </div>
     </div>
-
-    <div class="fixed-button--block">
-      <v-btn block color="#E1B12C" theme="dark" @click="finishWorkout()">Salvar</v-btn>
-    </div>
-  </div>
+  </v-container>
 </template>
 
 <style scoped lang="scss">

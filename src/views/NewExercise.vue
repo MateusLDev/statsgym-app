@@ -42,12 +42,12 @@ const createExercise = () => {
     localStorage.setItem('myWorkouts', JSON.stringify([...newWorkouts.value]))
   }
 
-  router.push({ name: 'home' });
+  router.push({ name: 'Home' });
 };
 </script>
 
 <template>
-  <div>
+  <v-container>
     <PageHeader>Adicionar treino</PageHeader>
 
     <div class="new-workouts-wrapper">
@@ -102,7 +102,7 @@ const createExercise = () => {
         <v-btn block color="#E1B12C" theme="dark" @click="createExercise()">Salvar</v-btn>
       </div>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <style scoped lang="scss">

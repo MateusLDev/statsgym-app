@@ -3,12 +3,16 @@ import { RouterView } from 'vue-router';
 </script>
 
 <template>
-  <v-container>
+  <!-- <v-container> -->
     <RouterView />
-  </v-container>
+  <!-- </v-container> -->
 </template>
 
 <style scoped>
+.v-btn__content {
+  text-transform: none !important;
+}
+
 @media (min-width: 1024px) {
   header {
     display: flex;
