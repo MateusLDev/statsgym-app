@@ -25,36 +25,39 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
 </script>
 
 <template>
-  <div class="view-workout-wrapper">
-    <PageHeader>Visualizar treino</PageHeader>
+  <v-container>
 
-    <CardDisplay type="large" identificator="Treino A" :workout="workoutData?.name"
-      :information="setWorkoutInformation(workoutData?.exercises.length)" />
+    <div class="view-workout-wrapper">
+      <PageHeader>Visualizar treino</PageHeader>
 
-    <h2 class="page-subheader mb-1">Detalhes</h2>
-    <p class="workout-description mb-4">
-      {{ workoutData?.description }}
-    </p>
+      <CardDisplay type="large" identificator="Treino A" :workout="workoutData?.name"
+        :information="setWorkoutInformation(workoutData?.exercises.length)" />
 
-    <v-table density="compact">
-      <thead>
-        <tr>
-          <th class="text-left">EXERCÍCIO</th>
-          <th class="text-left">SÉRIES</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in workoutData?.exercises" :key="item.name">
-          <td>{{ item.name }}</td>
-          <td>{{ item.sets }}</td>
-        </tr>
-      </tbody>
-    </v-table>
+      <h2 class="page-subheader mb-1">Detalhes</h2>
+      <p class="workout-description mb-4">
+        {{ workoutData?.description }}
+      </p>
 
-    <div class="fixed-button--centered">
-      <v-btn density="default" color="#E1B12C" theme="dark" icon="mdi-play" @click="goToRegisterWorkout()"></v-btn>
+      <v-table density="compact">
+        <thead>
+          <tr>
+            <th class="text-left">EXERCÍCIO</th>
+            <th class="text-left">SÉRIES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in workoutData?.exercises" :key="item.name">
+            <td>{{ item.name }}</td>
+            <td>{{ item.sets }}</td>
+          </tr>
+        </tbody>
+      </v-table>
+
+      <div class="fixed-button--centered">
+        <v-btn density="default" color="#E1B12C" theme="dark" icon="mdi-play" @click="goToRegisterWorkout()"></v-btn>
+      </div>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <style scoped lang="scss">
