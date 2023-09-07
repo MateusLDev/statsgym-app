@@ -66,7 +66,7 @@ const setWorkoutInformation = (setAmount: number | undefined) =>
 
 const finishWorkout = () => {
   let finishedWorkouts = localStorage.getItem('finishedWorkouts')
-  ''
+  
   if (finishedWorkouts) {
     localStorage.setItem('finishedWorkouts', JSON.stringify([...finishedWorkouts, workoutToRegister.value]))
   } else {

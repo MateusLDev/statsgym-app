@@ -43,4 +43,27 @@ const router = createRouter({
   ],
 });
 
+router.beforeEach((to, _, next) => {
+  const isFirstLogin = localStorage.getItem('isFirstLogin')
+  const isLogged = localStorage.getItem('isLogged')
+  const notInAuthorizedRoute = to.name !== 'Welcome' && to.name !== 'Login' && to.name !== 'Register'
+
+  if(isFirstLogin && JSON.parse(isFirstLogin) === true && notInAuthorizedRoute) {
+    next({ name: 'Welcome' })
+    return;
+  }
+
+  if((!isLogged || JSON.parse(isLogged) === false) && notInAuthorizedRoute) {
+    next({ name: 'Welcome' })
+    return;
+  }
+
+  if(isLogged && JSON.parse(isLogged) === true && !notInAuthorizedRoute) {
+    next({name: 'Home'})
+    return;
+  }
+
+  next();
+})
+
 export default router;

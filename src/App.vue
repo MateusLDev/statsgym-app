@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
+
+if(!localStorage.getItem('isFirstLogin')) {
+  localStorage.setItem('isFirstLogin', 'true')
+}
 </script>
 
 <template>
